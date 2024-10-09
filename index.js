@@ -50,6 +50,7 @@ app.use(express.static('public'));
 //sets up express server on port whatever the port is lol
 
 app.use('/', require('./server/routes/main'));
+app.use('/', require('./server/routes/admin'));
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);

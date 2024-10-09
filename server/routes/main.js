@@ -63,4 +63,14 @@ router.post('/search', async (req, res) => {
   
   });
 
+router.get('/about', (req, res) => {
+
+    const locals = {
+        title: "About",
+        description: "About WALF",
+    }
+
+    res.render('about', { locals });
+})
+
 module.exports = router;
