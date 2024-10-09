@@ -1,6 +1,11 @@
-const dropdownBtn = document.getElementById("dropdownHeadBtn");
+const dropdownBtn = document.getElementsByClassName("dropdownHeadBtn");
 const dropdownMenu = document.getElementById("dropdown");
 const toggleArrow = document.getElementById("arrow");
+const selectDropdownItem = document.getElementsByClassName("choice");
+
+var value = "";
+
+console.log(selectDropdownItem)
 
 const toggleDropdown = function () {
   dropdownMenu.classList.toggle("show");
@@ -34,13 +39,27 @@ const toggleDropdown = function () {
 // });
 
 
-dropdownBtn.addEventListener("click", function (e) {
-  e.stopPropagation();
-  toggleDropdown();
-});
 
 document.documentElement.addEventListener("click", function () {
   if (dropdownMenu.classList.contains("show")) {
     toggleDropdown();
   }
 });
+
+for (var i = 0; i < dropdownBtn.length; i++) {
+  dropdownBtn[i].onclick = toggleDropdown();
+  for (var j = 0; j < selectDropdownItem.length; j++) {
+    selectDropdownItem[j].onclick = makeTag;
+    console.log(selectDropdownItem[j].textContent);
+  }
+}
+
+
+
+
+function makeTag() {
+  value = this.text;
+  interim = this.offsetParent.previousElementSibling.textContent;
+  this.offsetParent.previousElementSibling.innerHTML = `${value}<i class=\"bx bx-chevron-down\" id=\"arrow\"></i>`;
+  this.textContent = interim
+};

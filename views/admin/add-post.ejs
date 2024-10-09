@@ -10,11 +10,12 @@
 
   <label for="body"><b>Tags</b></label>
   <p>Quick brief on tagging items for qualities: include color, size, quantity, names, wa-apparel or not, and then other miscellaneous information. Order and capitalization does not matter, but include all of those attributes.</p>
-  <textarea name="body" cols="50" rows="10" placeholder="eg. 'jacket, blue, wa-apparel, name: john, size small, one, has a red stain'"></textarea>
+  <textarea name="body" cols="50" rows="10" placeholder="eg. 'jacket, blue, wa-apparel, name: john, size: adult small, one, has a red stain'"></textarea>
 
-  <div class="dropdown">
+  <!-- Dropdown template -->
+  <!-- <div class="dropdown">
     <button class="btn" id="dropdownHeadBtn">
-      Dropdown
+      dropdown
       <i class="bx bx-chevron-down" id="arrow"></i>
     </button>
     <div class="dropdownBody" id="dropdown">
@@ -42,6 +43,32 @@
         <i class="bx bx-cog"></i>
         Settings
       </a>
+    </div>
+  </div>   -->
+
+  <div class="dropdown">
+    <button type="button" class="btn dropdownHeadBtn">WA Apparel<i class="bx bx-chevron-down" id="arrow"></i></button>
+    <div class="dropdownBody" id="dropdown">
+      <a class="choice"><i class="bx bx-plus-circle"></i>Yes</a>
+      <a class="choice"><i class="bx bx-book"></i>No</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button type="button" class="btn dropdownHeadBtn">Color<i class="bx bx-chevron-down" id="arrow"></i></button>
+    <div class="dropdownBody" id="dropdown">
+      <a class="choice"><i class="bx bx-plus-circle"></i>Red</a>
+      <a class="choice"><i class="bx bx-book"></i>Blue</a>
+      <a class="choice"><i class="bx bx-book"></i>Other</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button type="button" class="btn dropdownHeadBtn">Quantity<i class="bx bx-chevron-down" id="arrow"></i></button>
+    <div class="dropdownBody" id="dropdown">
+      <a class="choice"><i class="bx bx-plus-circle"></i>1</a>
+      <a class="choice"><i class="bx bx-book"></i>2</a>
+      <a class="choice"><i class="bx bx-book"></i>Other</a>
     </div>
   </div>
 

@@ -165,7 +165,6 @@ router.get('/add-post', authMiddleware, async (req, res) => {
 router.post('/add-post', authMiddleware, upload.single('imgfile'), async (req, res) => {
   try {
     try {
-      console.log(req.file);
       const newPost = new Post({
         title: req.body.title,
         body: req.body.body,

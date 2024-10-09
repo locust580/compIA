@@ -370,6 +370,10 @@ img {
   font-size: 1.1rem;
 }
 
+.dropdown {
+  display: inline;
+}
+
 .dropdownBody {
   position: absolute;
   width: 250px;
@@ -407,4 +411,11 @@ img {
 .dropdownBody a:hover {
   background-color: var(--color);
   color: white;
+}
+
+/* File Submit Styline */
+
+#imgFile {
+  display: block;
+  margin-block: 20px;
 }
