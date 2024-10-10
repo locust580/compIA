@@ -63,6 +63,8 @@ router.post('/search', async (req, res) => {
   
   });
 
+//About Page
+
 router.get('/about', (req, res) => {
 
     const locals = {
@@ -74,3 +76,29 @@ router.get('/about', (req, res) => {
 })
 
 module.exports = router;
+
+//Individual Club Post Page
+
+router.get('/post/:id', async (req, res) => {
+  try {
+      
+      let slug = req.params.id;
+
+      const data = await Post.findById({ 
+          _id: slug,
+      });
+
+      
+
+      const locals = {
+          title: data.title,
+          description: "Lost and Found",
+      }
+
+      res.render('post', { locals, data });
+
+  }   catch (error) {
+      console.log(error);
+  }
+
+});

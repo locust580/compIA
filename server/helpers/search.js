@@ -24,7 +24,7 @@ async function searchFor(term) {
     });
     if (midData != []){
       //data = data.concat(midData);
-      data = merge(data, midData, (a,b) => a.title === b.title);
+      data = merge(data, midData, (a,b) => a.createdAt === b.createdAt);
     }
   }
   //return the sorted and searched posts
