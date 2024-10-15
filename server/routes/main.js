@@ -75,7 +75,19 @@ router.get('/about', (req, res) => {
     res.render('about', { locals });
 })
 
-module.exports = router;
+
+//Calendar
+
+router.get('/calendar', (req, res) => {
+
+  const locals = {
+      title: "Calendar",
+      description: "Its a calendar",
+  }
+
+  res.render('calendar', { locals });
+})
+
 
 //Individual Club Post Page
 
@@ -102,3 +114,5 @@ router.get('/post/:id', async (req, res) => {
   }
 
 });
+
+module.exports = router;
