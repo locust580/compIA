@@ -21,5 +21,8 @@
       <a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Posts</a>
     <% } %>
 
+    <% if (current >= 2) { %>
+     <a href="/?page=<%= current-1 %>" class="pagination">&gt; View Newer Posts</a>
+    <% } %>
 
 </section>

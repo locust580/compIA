@@ -28,6 +28,19 @@ const upload = multer({
   },
 )
 
+//google calendar stuff
+const {google} = require('googleapis');
+const CREDENTIALS = JSON.parse(process.env.CREDENTIALS);
+const calendarId = process.env.CALENDAR_ID;
+const SCOPES = 'https://www.googleapis.com/auth/calendar';
+const calendar = google.calendar('v3');
+
+const auth = new google.auth.JWT(
+  CREDENTIALS.client_email,
+  null,
+  CREDENTIALS.private_key,
+  SCOPES
+);
 
 /**
  * Check Login
@@ -162,16 +175,90 @@ router.get('/add-post', authMiddleware, async (req, res) => {
  * Create New Post
  */
 
+const insertEvent = async (event) => {
+
+  try {
+      await calendar.events.insert({
+          auth: auth,
+          calendarId: calendarId,
+          resource: event
+      }, function(err, event) {
+        if (err) {
+          console.log('There was an error contacting the Calendar service: ' + err);
+          return;
+        } 
+      });
+      console.log(event.htmlLink);
+  } catch (error) {
+      console.log(`Error at insertEvent --> ${error}`);
+      return 0;
+  }
+};
+
 router.post('/add-post', authMiddleware, upload.single('imgfile'), async (req, res) => {
   try {
+
+    let start = req.body.startDay + 'T' + req.body.startHour + ':00-06:00'
+    let end = req.body.startDay + 'T' + req.body.endHour + ':00-06:00'
+
+    let freq = ""
+    switch (req.body.recurrence) {
+      case "W":
+        freq = "RRULE:FREQ=WEEKLY;UNTIL=20250530T120000Z";
+        break
+      case "B":
+        freq = "RRULE:FREQ=WEEKLY;INTERVAL=2;UNTIL=20250531T120000Z";
+        break
+      case "M":
+        freq = "RRULE:FREQ=MONTHLY;UNTIL=20250531T120000Z";
+        break
+      case "D":
+        freq = "RRULE:FREQ=DAILY;UNTIL=20250531T120000Z";
+        break
+      default:
+        freq = null;
+    }
+
     const newPost = new Post({
       title: req.body.title,
       body: req.body.body,
       imagePath: req.file.filename,
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      startDay: start,
+      endTime: end,
+      recurrence: freq
     })
 
     await Post.create(newPost);
+
+    var event = {
+      'summary': req.body.title,
+      'location': '2600 J T Ottinger Rd, Westlake, TX 76262',
+      'description': req.body.title,
+      'start': {
+        'dateTime': start,
+        'timeZone': 'America/Chicago',
+      },
+      'end': {
+        'dateTime': end,
+        'timeZone': 'America/Chicago',
+      },
+      'recurrence': [freq],
+      'reminders': {
+        'useDefault': true,
+      },
+    };
+
+    insertEvent(event)
+      .then((res) => {
+        console.log("inner success:" + event.htmlLink);
+      })
+      .catch((err) => {
+        console.log("inner failure:" + err);
+      });
+    
+    
+
     res.redirect('/dashboard');
   } catch (error) {
     console.log(error)

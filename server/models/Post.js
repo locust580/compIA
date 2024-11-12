@@ -21,6 +21,17 @@ const PostSchema = new Schema({
     updatedAt: {
         type: Date,
         default: Date.now
+    },
+    startDay: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
+    },
+    recurrence: {
+        type: String,
     }
 })
 

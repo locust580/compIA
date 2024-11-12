@@ -7,8 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const connectDB = require('./server/config/db');
-
-//const isActiveRoute = require('./server/helpers/routeHelpers');
+const passport = require('passport');
 
 const app = express();
 const port = 5000 || process.env.PORT;
@@ -21,8 +20,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 
+//init session to save things like logins and cookies
 app.use(session({
-    secret: 'flippy dippy floppy',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
@@ -32,6 +32,26 @@ app.use(session({
 
 }))
 
+//init passport: the google login middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// //patch for a known passport bug (tragic)
+// //https://github.com/jaredhanson/passport/issues/907#issuecomment-1697590189
+// //TypeError: Cannot read properties of undefined (reading 'regenerate')
+// app.use((request, response, next) => {
+//   if (request.session && !request.session.regenerate) {
+//     request.session.regenerate = (cb) => {
+//       cb();
+//     };
+//   }
+//   if (request.session && !request.session.save) {
+//     request.session.save = (cb) => {
+//       cb();
+//     };
+//   }
+//   next();
+// });
 
 //Template engine
 app.use(expressLayout);

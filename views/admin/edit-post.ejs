@@ -6,15 +6,29 @@
   <a onclick="window.history.back()" class="btn">&larr; Back</a>
 </div>
 
+<div style="text-align: justify;">
+  <h3>Important Information</h3>
+  <p>The times you enter, and their formatting, are HIGHLY IMPORTANT. You WILL ruin your club entry if you put in a wrong date format. Put the day that the club started, and the backend will create a recurring entry for it. Due to how the dates are stored in the backend, the Date-Time format you're currently seeing looks very gross. It's not all bad however; the fields still mean the same thing, its just important you stick to this convention: [YYYY-MM-DDTHH:MM:SS-06:00]. A filled out example looks like this: [2025-05-31T09:37:00-06:00]. Additionally, your club description should ideally include what day you meet on, what room and building you're in, the teacher chaperone's name (and email if you're feeling audacious), and member maximums and minimums. If you need assistance, see <a href="/post/example">this</a> example of a post.</p>
+</div>
+
 <form action="/edit-post/<%= data._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
 
   <img src="/image-uploads/<%= data.imagePath %>" alt="<%= data.body %>" class="post-image">
 
-  <label for="title"><b>Title</b></label>
+  <label for="title"><b>Club Name</b></label>
   <input type="text" value="<%= data.title %>" name="title">
 
-  <label for="body"><b>Content</b></label>
+  <label for="body"><b>Description</b></label>
   <textarea name="body" cols="50" rows="10"><%= data.body %></textarea>
+  
+  <label for="startDay"><b>Starting Date-Time</b></label>
+  <input name="startDay" type="text" value="<%= data.startDay %>">
+
+  <label for="endHour"><b>Ending Date-Time</b></label>
+  <input name="endHour" type="text" value="<%= data.endTime %>">
+
+  <label for="recurrence"><b>How often do you meet?</b></label>
+  <input name="recurrence" type="text" value="<%= data.recurrence %>">
 
   <label for="image"><b>Image</b></label>
   <input for="image" type="file" name="imgfile" accept="image/jpeg" id="imgFile">

@@ -3,81 +3,33 @@
   <a href="/dashboard" class="btn">&larr; Back</a>
 </div>
 
+<div style="text-align: justify;">
+  <h3>Important Information</h3>
+  <p>The times you enter, and their formatting, are HIGHLY IMPORTANT. You WILL ruin your club entry if you put in a wrong date format. Put the day that the club started, and the backend will create a recurring entry for it. Additionally, your club description should ideally include what day you meet on, what room and building you're in, the teacher chaperone's name (and email if you're feeling audacious), and member maximums and minimums. If you need assistance, see <a href="/post/example">this</a> example of a post.</p>
+</div>
+
 <form action="/add-post" method="POST" enctype="multipart/form-data">
+  <label for="title"><b>Club Name</b></label>
+  <input type="text" placeholder="Super Awesome Club" name="title">
 
-  <label for="title"><b>Item</b></label>
-  <input type="text" placeholder="eg. 'Red Jacket'" name="title">
+  <label for="body"><b>Description</b></label>
+  <textarea name="body" cols="50" rows="7" placeholder="My really cool club! [Requisite filler information]"></textarea>
 
-  <label for="body"><b>Tags</b></label>
-  <p>Quick brief on tagging items for qualities: include color, size, quantity, names, wa-apparel or not, and then other miscellaneous information. Order and capitalization does not matter, but include all of those attributes.</p>
-  <textarea name="body" cols="50" rows="10" placeholder="eg. 'jacket, blue, wa-apparel, name: john, size: adult small, one, has a red stain'"></textarea>
+  <label for="startDay"><b>Starting Day</b></label>
+  <input name="startDay" type="text" placeholder="YYYY-MM-DD ; e.g. 2024-06-31">
 
-  <!-- Dropdown template -->
-  <!-- <div class="dropdown">
-    <button class="btn" id="dropdownHeadBtn">
-      dropdown
-      <i class="bx bx-chevron-down" id="arrow"></i>
-    </button>
-    <div class="dropdownBody" id="dropdown">
-      <a href="#create">
-        <i class="bx bx-plus-circle"></i>
-        Create New
-      </a>
-      <a href="#draft">
-        <i class="bx bx-book"></i>
-        All Drafts
-      </a>
-      <a href="#move">
-        <i class="bx bx-folder"></i>
-        Move To
-      </a>
-      <a href="#profile">
-        <i class="bx bx-user"></i>
-        Profile Settings
-      </a>
-      <a href="#notification">
-        <i class="bx bx-bell"></i>
-        Notification
-      </a>
-      <a href="#settings">
-        <i class="bx bx-cog"></i>
-        Settings
-      </a>
-    </div>
-  </div>   -->
+  <label for="startHour"><b>Starting Time</b></label>
+  <input name="startHour" type="text" placeholder="HH:MM ; e.g. 03:15">
 
-  <div class="dropdown">
-    <button type="button" class="btn dropdownHeadBtn">WA Apparel<i class="bx bx-chevron-down" id="arrow"></i></button>
-    <div class="dropdownBody" id="dropdown">
-      <a class="choice"><i class="bx bx-plus-circle"></i>Yes</a>
-      <a class="choice"><i class="bx bx-book"></i>No</a>
-    </div>
-  </div>
+  <label for="endHour"><b>Ending Time</b></label>
+  <input name="endHour" type="text" placeholder="HH:MM ; e.g. 04:30">
 
-  <div class="dropdown">
-    <button type="button" class="btn dropdownHeadBtn">Color<i class="bx bx-chevron-down" id="arrow"></i></button>
-    <div class="dropdownBody" id="dropdown">
-      <a class="choice"><i class="bx bx-plus-circle"></i>Red</a>
-      <a class="choice"><i class="bx bx-book"></i>Blue</a>
-      <a class="choice"><i class="bx bx-book"></i>Other</a>
-    </div>
-  </div>
-
-  <div class="dropdown">
-    <button type="button" class="btn dropdownHeadBtn">Quantity<i class="bx bx-chevron-down" id="arrow"></i></button>
-    <div class="dropdownBody" id="dropdown">
-      <a class="choice"><i class="bx bx-plus-circle"></i>1</a>
-      <a class="choice"><i class="bx bx-book"></i>2</a>
-      <a class="choice"><i class="bx bx-book"></i>Other</a>
-    </div>
-  </div>
+  <label for="recurrence"><b>How often do you meet?</b></label>
+  <input name="recurrence" type="text" placeholder="D for daily, W for weekly, M for monthly, B for bimonthly, O for other (and assumed as not recurring)">
 
   <label for="image"><b>Image</b></label>
   <input for="image" type="file" name="imgfile" accept="image/jpeg" id="imgFile">
   
-  <!-- <div class="" id="images"></div> -->
   <input type="submit" id="submitButton" value="Add" class="btn">
 
-  <!-- <script src="../submit.js"></script> -->
-  
 </form>

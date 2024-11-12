@@ -2,6 +2,23 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 const searchFor = require('../helpers/search');
+require('dotenv').config();
+
+require('../../auth');
+
+function isLoggedIn(req, res, next) {
+  req.user ? next() : res.sendStatus(401)
+}
+
+//google stuff 
+const fs = require('fs').promises;
+const path = require('path');
+const process = require('process');
+const {authenticate} = require('@google-cloud/local-auth');
+const {google} = require('googleapis');
+const passport = require('passport');
+const calendar = google.calendar('v3');
+
 
 // Get 
 // Home Page
@@ -88,6 +105,86 @@ router.get('/calendar', (req, res) => {
   res.render('calendar', { locals });
 })
 
+router.post('/create-event', async (req, res) => {
+  try {
+    const event = {
+      "title": req.body.title,
+      "location": "Unknown",
+      "description": req.body.body,
+      "start": {
+        "dateTime": "2024-10-29T15:15:00-06:00",
+        "timeZone": "America/Dallas"
+      },
+      "end" : {
+        "dateTime": "2024-10-29T16:15:00-06:00",
+        "timeZone": "America/Dallas"
+      },
+      'recurrence': [
+        'RRULE:FREQ=WEEKLY'
+      ],
+      'attendees': [
+        {'email': 'wa.clubsite@gmail.com'},
+        {'email': 'hunterbearintx@gmail.com'},
+      ],
+    }
+
+    calendar.events.insert({
+      auth: auth,
+      calendarID: 'primary',
+      resource: event,
+    }, function(err, event) {
+      if(err) {
+        console.log('error lol' + err);
+        return;
+      }
+      console.log('Event created: %s', event.htmlLink);
+    });
+
+    res.redirect('/calendar')
+
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+})
+
+//protected club view page
+
+router.get('/protected', isLoggedIn, (req, res) => {
+  const data = {
+    stuff: req.user.displayName,
+  }
+  
+  res.render('protected')
+})
+
+//next four are self-explaining; have to do with google sign in routes
+router.get('/auth/google', 
+  passport.authenticate('google', { scope: ['email', 'profile']})
+);
+
+router.get('/google/callback', 
+  passport.authenticate('google', {
+    successRedirect: '/protected',
+    failureRedirect: '/failure'
+  })
+)
+
+router.get('/failure', (req, res) => {
+  res.render('failure')
+})
+
+//Tragically the logout function is broken at this moment;
+//passport seems to have some issues with cookies
+
+// router.get('/logout', isLoggedIn, (req, res) => {
+//   req.logout((err) => {
+//     console.log(err);
+//   });
+//   req.session.destroy();
+//   res.redirect('calendar')
+// })
+
 
 //Individual Club Post Page
 
@@ -114,5 +211,7 @@ router.get('/post/:id', async (req, res) => {
   }
 
 });
+
+
 
 module.exports = router;
