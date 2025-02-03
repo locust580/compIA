@@ -23,15 +23,19 @@ const PostSchema = new Schema({
         default: Date.now
     },
     startDay: {
-        type: Date,
+        type: String,
         required: true
     },
     endTime: {
-        type: Date,
+        type: String,
         required: true
     },
     recurrence: {
         type: String,
+    },
+    eventID: {
+        type: String,
+        required: true
     }
 })
 

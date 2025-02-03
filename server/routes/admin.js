@@ -64,7 +64,26 @@ const authMiddleware = (req, res, next) => {
 }
 
 
+//gets a google calendar event's ID and returns it
 
+const getEventID = async (dateTimeStart, dateTimeEnd) => {
+
+  try {
+      let response = await calendar.events.list({
+          auth: auth,
+          calendarId: calendarId,
+          timeMin: dateTimeStart,
+          timeMax: dateTimeEnd,
+          // timeZone: 'America/Chicago'
+      });
+  
+      let id = response['data']['items'][0].id;
+      return id;
+  } catch (error) {
+      console.log(`Error at getEventID --> ${error}`);
+      return 0;
+  }
+};
 
 
 /**
@@ -219,22 +238,10 @@ router.post('/add-post', authMiddleware, upload.single('imgfile'), async (req, r
         freq = null;
     }
 
-    const newPost = new Post({
-      title: req.body.title,
-      body: req.body.body,
-      imagePath: req.file.filename,
-      createdAt: Date.now(),
-      startDay: start,
-      endTime: end,
-      recurrence: freq
-    })
-
-    await Post.create(newPost);
-
     var event = {
       'summary': req.body.title,
       'location': '2600 J T Ottinger Rd, Westlake, TX 76262',
-      'description': req.body.title,
+      'description': req.body.body,
       'start': {
         'dateTime': start,
         'timeZone': 'America/Chicago',
@@ -257,7 +264,18 @@ router.post('/add-post', authMiddleware, upload.single('imgfile'), async (req, r
         console.log("inner failure:" + err);
       });
     
-    
+    const newPost = new Post({
+      title: req.body.title,
+      body: req.body.body,
+      imagePath: req.file.filename,
+      createdAt: Date.now(),
+      startDay: start,
+      endTime: end,
+      recurrence: freq,
+      eventID: await getEventID(start,end),
+    })
+
+    await Post.create(newPost);
 
     res.redirect('/dashboard');
   } catch (error) {
@@ -302,13 +320,24 @@ router.put('/edit-post/:id', authMiddleware, upload.single('imgfile'), async (re
       title: req.body.title,
       body: req.body.body,
       imagePath: req.file.filename,
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
+      startDay: req.body.startDay,
+      endTime: req.body.endHour,
+      recurrence: req.body.recurrence,
+      eventID: await getEventID(req.body.startDay, req.body.endHour)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     }).then(async (Post) => {
       console.log(Post)
       await fs.unlink("public/image-uploads/" + Post.imagePath, (err) => {
         if (err) console.log(err);
       })
     })
+    
 
     res.redirect(`/edit-post/${req.params.id}`);
 
@@ -337,7 +366,26 @@ router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
     } catch (err) {
       console.log(err);
     }
-    
+
+    try {
+      calendar.events.delete({
+        auth: auth,
+        calendarId: calendarId,
+        eventId: postData.eventID,
+        sendUpdates: all
+        
+    }
+    // , function(err, event) {
+    //   if (err) {
+    //     console.log('There was an error contacting the Calendar service: ' + err);
+    //     return;
+    //   } 
+    // }
+  );
+    } catch (error) {
+      console.log(error)
+    }
+
     await Post.deleteOne( { _id: req.params.id } );
 
     res.redirect('/dashboard');
