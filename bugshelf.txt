@@ -1,0 +1,14 @@
+A list of my grievances:
+- (fixed) time-date storage of MongoDB is not consistent with that of the Google APIs, resulting in a one hour ahead jump due to different interpretations of timezones
+- (fixed) this baby blue background is not it 
+- (fixed) the back and forth buttons on the index page need to be reworked to allow for specific page navigation
+- (not an issue/more of a feature) holidays that are viewable on the calendar
+- (not allowed w/ client specifications) club calendar could probably be mixed with user calendars, but that might also look really messy
+- (might be deprecated/can be worked around) events.htmlLink doesn't seem to be working right for me, though why I'm not sure; it always returned undefined.
+
+What to be added:
+Since club posts and their calendar entries are separate, create links to both so that the website can be more easily traversed. Additionally, store the same content underneath both entries, so that users only have to go to one place for all the information they need. This includes adding dates and times to the club posts, and descriptions and tags to the calendar entries.
+Reformat the club posts so that the images are not as large, and so the descriptions take up more space.
+When adding and editing clubs, make the dates and times calendar pop ups and time dropdowns instead of text fields. This will increase the UX, since it is currently rather annoying to have to type in dates properly as plain text.
+Add a semester functionality. Currently, the calendar entries are set to end at the end of the school year, but this could be altered so that they only last until the end of the semester. Since clubs are established and reimplemented on a semester basis, this could reduce confusion with club calendar entries existing when the clubs themselves don’t exist. This functionality could be added by creating a button that adds on a second semester of clubs, and when unchecked deletes all those entries as well. 
+Add a cross-year functionality. Same idea as the semester functionality above; add some kind of button that transfers all the data from the previous school year’s clubs to the next school year, allowing for easy data migration without requiring a user to have to manually re-input all the clubs.
